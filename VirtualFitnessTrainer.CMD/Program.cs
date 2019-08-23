@@ -170,7 +170,7 @@ namespace VirtualFitnessTrainer.CMD
         static void Main(string[] args)
         {
             MainMenu(out User user);
-
+            
             userController.SaveUserData();
         }
     }
