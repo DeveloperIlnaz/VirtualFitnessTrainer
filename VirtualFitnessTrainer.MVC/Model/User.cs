@@ -1,4 +1,5 @@
 ﻿using System;
+using VirtualFitnessTrainer.MVC.Model.UserComponents;
 
 namespace VirtualFitnessTrainer.MVC.Model
 {
@@ -64,7 +65,6 @@ namespace VirtualFitnessTrainer.MVC.Model
         /// Пароль.
         /// </summary>
         private string password;
-
         /// <summary>
         /// Возраст.
         /// </summary>

@@ -33,10 +33,10 @@ namespace VirtualFitnessTrainer.CMD
                     switch (mainMenuCommands)
                     {
                         case MainMenuCommands.Registration:
-                            user = UserRegistration();
+                            user = Registration();
                             break;
                         case MainMenuCommands.Authorization:
-                            user = UserAuthorization();
+                            user = Authorization();
                             break;
                     }
 
@@ -48,7 +48,7 @@ namespace VirtualFitnessTrainer.CMD
                 }
             }
         }
-        static User UserRegistration()
+        static User Registration()
         {
             string login = null;
             string password = null;
@@ -79,6 +79,7 @@ namespace VirtualFitnessTrainer.CMD
                         Console.Write("Введите возраст: ");
                         int.TryParse(Console.ReadLine(), out age);
                     }
+
                     if (height is 0.0)
                     {
                         Console.Write("Введите рост: ");
@@ -91,7 +92,7 @@ namespace VirtualFitnessTrainer.CMD
                         double.TryParse(Console.ReadLine(), out weight);
                     }
 
-                    User user = userController.Registration(login, password, age, height, weight);
+                    User user = userController.Add(login, password, age, height, weight);
 
                     Console.WriteLine("Вы успешно зарегистрировались.");
 
@@ -122,7 +123,7 @@ namespace VirtualFitnessTrainer.CMD
                 }
             }
         }
-        static User UserAuthorization()
+        static User Authorization()
         {
             string login = null;
             string password = null;
@@ -145,7 +146,7 @@ namespace VirtualFitnessTrainer.CMD
                         password = Console.ReadLine();
                     }
 
-                    User user = userController.Authorization(login, password);
+                    User user = userController.LogIn(login, password);
 
                     Console.WriteLine("Вы успешно авторизовались.");
 
@@ -170,7 +171,7 @@ namespace VirtualFitnessTrainer.CMD
         static void Main(string[] args)
         {
             MainMenu(out User user);
-            
+
             userController.SaveUserData();
         }
     }

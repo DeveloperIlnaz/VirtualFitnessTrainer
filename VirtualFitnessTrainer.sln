@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualFitnessTrainer.MVC",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualFitnessTrainer.CMD", "VirtualFitnessTrainer.CMD\VirtualFitnessTrainer.CMD.csproj", "{9305D3C8-1B23-4388-A377-3A526AE9E8C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualFitnessTrainer.MVCTests", "VirtualFitnessTrainer.MVCTests\VirtualFitnessTrainer.MVCTests.csproj", "{963E93FB-5C7F-47DE-9E9E-871DA831A449}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9305D3C8-1B23-4388-A377-3A526AE9E8C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9305D3C8-1B23-4388-A377-3A526AE9E8C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9305D3C8-1B23-4388-A377-3A526AE9E8C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{963E93FB-5C7F-47DE-9E9E-871DA831A449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{963E93FB-5C7F-47DE-9E9E-871DA831A449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{963E93FB-5C7F-47DE-9E9E-871DA831A449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{963E93FB-5C7F-47DE-9E9E-871DA831A449}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
