@@ -13,7 +13,7 @@ namespace VirtualFitnessTrainer.CMD
     class Program
     {
         static UserController userController = new UserController();
-
+        
         static void MainMenu(out User user)
         {
             user = null;
