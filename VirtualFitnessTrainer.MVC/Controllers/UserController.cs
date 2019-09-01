@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using VirtualFitnessTrainer.MVC.Model;
+using VirtualFitnessTrainer.MVC.Models;
 
-namespace VirtualFitnessTrainer.MVC.Controller
+namespace VirtualFitnessTrainer.MVC.Controllers
 {
     /// <summary>
     /// Пользовательский контроллер.
@@ -14,39 +14,29 @@ namespace VirtualFitnessTrainer.MVC.Controller
         /// <summary>
         /// Список пользователей.
         /// </summary>
-        private static List<User> users;
-        #endregion
-
-        #region Properties
-        /// <summary>
-        /// Список пользователей.
-        /// </summary>
-        public List<User> Users
-        {
-            get
-            {
-                return users;
-            }
-        }
+        private List<User> users;
         #endregion
 
         #region Constructors
-        /// <summary>
-        /// Инициализиует пользовательский контроллер.
-        /// </summary>
         public UserController()
         {
-            users = SerializableController.Load<User>("Users.bin");
+            users = SerializableSaver.Load<User>("Users.dat");
         }
         #endregion
 
-        #region Methods
-        /// <summary>
-        /// Сохраняет данные пользователей.
-        /// </summary>
-        public void SaveUserData()
+        ~UserController()
         {
-            SerializableController.Save("Users.bin", users);
+            SerializableSaver.Save("Users.dat", users);
+        }
+
+        #region Method
+        /// <summary>
+        /// Получает всех пользователей.
+        /// </summary>
+        /// <returns>Возвращает список всех пользователей.</returns>
+        public List<User> GetUsers()
+        {
+            return users;
         }
         /// <summary>
         /// Логинет существующего пользователя.
@@ -109,6 +99,8 @@ namespace VirtualFitnessTrainer.MVC.Controller
             User user = new User(login, password, age, height, weight);
 
             users.Add(user);
+
+            SerializableSaver.Save("Users.dat", users);
 
             return user;
         }

@@ -41,10 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\SerializableController.cs" />
-    <Compile Include="Controller\UserController.cs" />
-    <Compile Include="Model\User.cs" />
-    <Compile Include="Model\UserComponents\Gender.cs" />
+    <Compile Include="Controllers\ExerciseController.cs" />
+    <Compile Include="Controllers\SerializableSaver.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Models\Exercise.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,13 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VirtualFitnessTrainer.MVC.Controller;
+using VirtualFitnessTrainer.MVC.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtualFitnessTrainer.MVC.Model;
+using VirtualFitnessTrainer.MVC.Models;
 
-namespace VirtualFitnessTrainer.MVC.Controller.Tests
+namespace VirtualFitnessTrainer.MVC.Controllers.Tests
 {
     [TestClass()]
     public class UserControllerTests

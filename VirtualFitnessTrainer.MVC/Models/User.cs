@@ -1,7 +1,6 @@
 ﻿using System;
-using VirtualFitnessTrainer.MVC.Model.UserComponents;
 
-namespace VirtualFitnessTrainer.MVC.Model
+namespace VirtualFitnessTrainer.MVC.Models
 {
     [Serializable]
     /// <summary>
@@ -211,6 +210,34 @@ namespace VirtualFitnessTrainer.MVC.Model
             Age = age;
             Height = height;
             Weight = weight;
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Определяет, равен ли заданный объект текущему объект (по логину).
+        /// </summary>
+        /// <param name="obj">Объект.</param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is User user)
+            {
+                if (user.Login == Login)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        /// <summary>
+        /// Служит хэш-функций по умолчанию.
+        /// </summary>
+        /// <returns>Хэш.</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
         #endregion
     }
