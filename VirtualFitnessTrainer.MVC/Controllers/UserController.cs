@@ -8,7 +8,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
     /// <summary>
     /// Пользовательский контроллер.
     /// </summary>
-    public class UserController
+    public class UserController : BaseController
     {
         #region Fields
         /// <summary>
@@ -20,14 +20,9 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         #region Constructors
         public UserController()
         {
-            users = SerializableSaver.Load<User>("Users.dat");
+            users = Load<User>().ToList();
         }
         #endregion
-
-        ~UserController()
-        {
-            SerializableSaver.Save("Users.dat", users);
-        }
 
         #region Method
         /// <summary>
@@ -37,6 +32,13 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         public List<User> GetUsers()
         {
             return users;
+        }
+        /// <summary>
+        /// Сохраняет всех пользователей.
+        /// </summary>
+        public void SaveUsers()
+        {
+            Save(users);
         }
         /// <summary>
         /// Логинет существующего пользователя.
@@ -78,6 +80,8 @@ namespace VirtualFitnessTrainer.MVC.Controllers
 
             users.Add(user);
 
+            SaveUsers();
+
             return user;
         }
         /// <summary>
@@ -100,7 +104,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
 
             users.Add(user);
 
-            SerializableSaver.Save("Users.dat", users);
+            SaveUsers();
 
             return user;
         }
@@ -118,6 +122,8 @@ namespace VirtualFitnessTrainer.MVC.Controllers
             User user = users.Single(u => u.Login.Equals(login));
 
             users.Remove(user);
+
+            SaveUsers();
         }
         #endregion
     }

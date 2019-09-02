@@ -1,63 +1,96 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Resources;
 using System.Globalization;
+using System.Collections.Generic;
 using VirtualFitnessTrainer.MVC.Models;
 using VirtualFitnessTrainer.MVC.Controllers;
-using System.Collections.Generic;
 
 namespace VirtualFitnessTrainer.CMD
 {
-    internal enum MainMenuCommands
-    {
-        Registration = 1,
-        Authorization = 2
-    }
-
     internal class Program
     {
+        private static CultureInfo cultureInfo;
+        private static ResourceManager resourceManager = new ResourceManager("VirtualFitnessTrainer.CMD.Languages.Language", typeof(Program).Assembly);
+
         private static UserController userController = new UserController();
         private static ExerciseController exerciseController = new ExerciseController();
 
-        private static void StartMenu(out User user)
+        private static string GetLanguageItemValue(string name)
         {
-            user = null;
+            return resourceManager.GetString(name, cultureInfo);
+    }
+        private static void ChooseLanguage()
+        {
+            string language = "";
 
             while (true)
             {
-                try
+                Console.WriteLine("[Languages]");
+
+                Console.WriteLine("E - English");
+                Console.WriteLine("R - Russian");
+
+                ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
+
+                Console.Clear();
+
+                switch (consoleKeyInfo.Key)
                 {
-                    Console.WriteLine($"1. Регистрация\n2. Авторизация");
-
-                    Console.Write("Введите номер команды:");
-
-                    MainMenuCommands mainMenuCommands = (MainMenuCommands)Enum.GetValues(typeof(MainMenuCommands)).GetValue(int.Parse(Console.ReadLine()) - 1);
-
-                    Console.Clear();
-
-                    switch (mainMenuCommands)
-                    {
-                        case MainMenuCommands.Registration:
-                            user = UserRegistration();
-                            break;
-                        case MainMenuCommands.Authorization:
-                            user = UserAuthorization();
-                            break;
-                    }
-
-                    break;
+                    case ConsoleKey.E:
+                        language = "en-US";
+                        break;
+                    case ConsoleKey.R:
+                        language = "ru-RU";
+                        break;
+                    default:
+                        continue;
                 }
-                catch (Exception exception)
+
+                cultureInfo = CultureInfo.CreateSpecificCulture(language);
+
+                break;
+            }
+        }
+        private static void StartMenu(out User user)
+        {
+            while (true)
+            {
+                Console.WriteLine(GetLanguageItemValue("SMTitle"));
+
+                Console.WriteLine($"R - {GetLanguageItemValue("SMItem1")}");
+                Console.WriteLine($"A - {GetLanguageItemValue("SMItem2")}");
+
+                ConsoleKeyInfo consoleKeyInfo = Console.ReadKey();
+
+                Console.Clear();
+
+                switch (consoleKeyInfo.Key)
                 {
-                    Console.WriteLine($"Ошибка {exception.Message}");
+                    case ConsoleKey.R:
+                        user = UserRegistration();
+                        break;
+                    case ConsoleKey.A:
+                        user = UserAuthorization();
+                        break;
+                    default:
+                        continue;
                 }
+
+                Thread.Sleep(500);
+                Console.Clear();
+
+                break;
             }
         }
         private static void MainMenu(User user)
         {
             while (true)
             {
-                Console.WriteLine("E - Меню управления за упражнениями (за сегодня)");
+                Console.WriteLine("[Главное меню]");
+
+                Console.WriteLine("E - Меню упражнений");
 
                 ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
 
@@ -71,6 +104,42 @@ namespace VirtualFitnessTrainer.CMD
                 }
             }
         }
+        private static void ExerciseMenu(User user)
+        {
+            while (true)
+            {
+                Console.WriteLine("[Меню упражнений]");
+
+                Console.WriteLine("S - Показать упражнения");
+                Console.WriteLine("A - Добавить упражнения");
+                Console.WriteLine("R - Удалить упражнения");
+                Console.WriteLine("B - Назад (в главный меню)");
+
+                ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
+
+                Console.Clear();
+
+                ExerciseType exerciseType;
+
+                switch (consoleKeyInfo.Key)
+                {
+                    case ConsoleKey.S:
+                        exerciseType = ChooseExerciseType();
+                        ShowUserExercises(user, exerciseType);
+                        break;
+                    case ConsoleKey.A:
+                        AddUserExercise(user);
+                        break;
+                    case ConsoleKey.R:
+                        exerciseType = ChooseExerciseType();
+                        RemoveUserExercise(user, exerciseType);
+                        break;
+                    case ConsoleKey.B:
+                        MainMenu(user);
+                        break;
+                }
+            }
+        }
         private static User UserRegistration()
         {
             string login = null;
@@ -79,7 +148,7 @@ namespace VirtualFitnessTrainer.CMD
             double height = 0.0;
             double weight = 0.0;
 
-            Console.WriteLine("Регистрация");
+            Console.WriteLine("[Регистрация]");
 
             while (true)
             {
@@ -151,7 +220,7 @@ namespace VirtualFitnessTrainer.CMD
             string login = null;
             string password = null;
 
-            Console.WriteLine("Авторизация");
+            Console.WriteLine("[Авторизация]");
 
             while (true)
             {
@@ -191,14 +260,16 @@ namespace VirtualFitnessTrainer.CMD
                 }
             }
         }
-        private static void ExerciseMenu(User user)
+        private static ExerciseType ChooseExerciseType()
         {
+            ExerciseType exerciseType;
+
             while (true)
             {
-                Console.WriteLine("S - Показать все упражнения");
-                Console.WriteLine("A - Добавить упражнения");
-                Console.WriteLine("R - Удалить упражнения");
-                Console.WriteLine("B - Назад (в главный меню)");
+                Console.WriteLine("[Тип]");
+
+                Console.WriteLine("A - За все время");
+                Console.WriteLine("F - За сегодня");
 
                 ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
 
@@ -206,41 +277,54 @@ namespace VirtualFitnessTrainer.CMD
 
                 switch (consoleKeyInfo.Key)
                 {
-                    case ConsoleKey.S:
-                        ShowUserAllExercisesForToday(user);
-                        break;
                     case ConsoleKey.A:
-                        AddUserExercise(user);
+                        exerciseType = ExerciseType.ForAllTime;
                         break;
-                    case ConsoleKey.R:
-                        RemoveUserExercise(user);
+                    case ConsoleKey.F:
+                        exerciseType = ExerciseType.ForToday;
                         break;
-                    case ConsoleKey.B:
-                        MainMenu(user);
-                        break;
+                    default:
+                        continue;
                 }
+
+                return exerciseType;
             }
         }
-        private static void ShowUserAllExercisesForToday(User user)
+        private static bool ShowUserExercises(User user, ExerciseType exerciseType)
         {
-            Console.WriteLine("Список всех упражнений");
+            List<Exercise> exercises = exerciseController.GetUserExercises(user, exerciseType);
 
-            List<Exercise> exercises = exerciseController.GetUserExercises(user, ExerciseShowType.ForToday);
+            Console.WriteLine("[Список упражнений]");
 
             if (exercises.Count < 1)
             {
                 Console.WriteLine("Пусто.");
 
-                return;
+                return true;
             }
 
             for (int index = 0; index < exercises.Count; index++)
             {
                 int number = index + 1;
+
                 Exercise exercise = exercises[index];
 
-                Console.WriteLine($"{number}.{exercise.Name}");
+                string exerciseAddedDate = exercise.Added.ToString("d");
+
+                switch (exerciseType)
+                {
+                    case ExerciseType.ForAllTime:
+                        Console.WriteLine($"{number}.{exercise.Name} - {exerciseAddedDate}");
+                        break;
+                    case ExerciseType.ForToday:
+                        Console.WriteLine($"{number}.{exercise.Name}");
+                        break;
+                }
             }
+
+            Console.WriteLine();
+
+            return false;
         }
         private static Exercise AddUserExercise(User user)
         {
@@ -253,40 +337,45 @@ namespace VirtualFitnessTrainer.CMD
 
             return exercise;
         }
-        private static void RemoveUserExercise(User user)
+        private static void RemoveUserExercise(User user, ExerciseType exerciseType)
         {
-            try
+            List<Exercise> exercises = exerciseController.GetUserExercises(user, exerciseType);
+
+            bool isEmpty = ShowUserExercises(user, exerciseType);
+
+            if (isEmpty)
             {
-                ShowUserAllExercisesForToday(user);
+                return;
+            }
 
-                Console.Write("Введите номер (-1 - удалить все упражнения):");
-
-                int number = int.Parse(Console.ReadLine());
-
-                if (number == -1)
-                {
-                    List<Exercise> exercises = exerciseController.GetUserExercises(user, ExerciseShowType.ForToday);
+            switch (exerciseType)
+            {
+                case ExerciseType.ForAllTime:
 
                     exerciseController.RemoveRange(user, exercises);
 
                     Console.WriteLine("Все упражнения удаленны.");
-                }
-                else
-                {
-                    Exercise exercise = exerciseController.GetUserExercises(user, ExerciseShowType.ForToday).ElementAt(number - 1);
 
-                    exerciseController.Remove(user, exercise);
+                    break;
+
+                case ExerciseType.ForToday:
+
+                    Console.Write("Введите номер:");
+
+                    int number = int.Parse(Console.ReadLine());
+
+                    exerciseController.Remove(user, exercises.ElementAt(number - 1));
 
                     Console.WriteLine("Упражнения удаленно.");
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine($"Ошибка {exception.Message}");
+
+                    break;
             }
         }
         private static void Main(string[] args)
         {
+            Console.Title = "VirtualFitnessTrainer";
+
+            ChooseLanguage();
             StartMenu(out User user);
             MainMenu(user);
         }

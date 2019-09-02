@@ -5,7 +5,7 @@ using VirtualFitnessTrainer.MVC.Models;
 
 namespace VirtualFitnessTrainer.MVC.Controllers
 {
-    public enum ExerciseShowType
+    public enum ExerciseType
     {
         /// <summary>
         /// За все время.
@@ -20,7 +20,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
     /// <summary>
     /// Контроллер упражнений.
     /// </summary>
-    public class ExerciseController
+    public class ExerciseController : BaseController
     {
         #region Fields
         /// <summary>
@@ -35,14 +35,9 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         /// </summary>
         public ExerciseController()
         {
-            exercises = SerializableSaver.Load<Exercise>("Exercises.dat");
+            exercises = Load<Exercise>().ToList();
         }
         #endregion
-
-        ~ExerciseController()
-        {
-            SerializableSaver.Save("Exercises.dat", exercises);
-        }
 
         #region Methods
         /// <summary>
@@ -54,21 +49,28 @@ namespace VirtualFitnessTrainer.MVC.Controllers
             return exercises;
         }
         /// <summary>
+        /// Сохраняет все упражнения.
+        /// </summary>
+        public void SaveExercises()
+        {
+            Save(exercises);
+        }
+        /// <summary>
         /// Получает все упражнения пользователя.
         /// </summary>
         /// <param name="user">Пользователь.</param>
         /// <param name="type">Тип сортировки упражнений.</param>
         /// <returns>Возвращает список упражнений пользователя (по типу сортировки).</returns>
-        public List<Exercise> GetUserExercises(User user, ExerciseShowType type)
+        public List<Exercise> GetUserExercises(User user, ExerciseType type)
         {
             List<Exercise> exercises = new List<Exercise>();
 
             switch (type)
             {
-                case ExerciseShowType.ForAllTime:
+                case ExerciseType.ForAllTime:
                     exercises.AddRange(this.exercises.Where(e => e.User.Equals(user)));
                     break;
-                case ExerciseShowType.ForToday:
+                case ExerciseType.ForToday:
                     exercises.AddRange(this.exercises.Where(e => e.User.Equals(user) && e.Added.Date.Equals(DateTime.Now.Date)));
                     break;
             }
@@ -85,19 +87,19 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         {
             if (user is null)
             {
-                throw new ArgumentNullException("Пользователь не может быть null.");
+                throw new ArgumentNullException("Пользователь не может быть null.", nameof(user));
             }
 
             if (exercises.Any(e => e.User.Equals(user) && e.Name.Equals(name) && e.Added.Date.Equals(DateTime.Now.Date)))
             {
-                throw new ArgumentException("");
+                throw new ArgumentException();
             }
 
             Exercise exercise = new Exercise(user, name);
 
             exercises.Add(exercise);
 
-            SerializableSaver.Save("Exercises.dat", exercises);
+            SaveExercises();
 
             return exercise;
         }
@@ -115,7 +117,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
 
             exercises.Remove(exercise);
 
-            SerializableSaver.Save("Exercises.dat", exercises);
+            SaveExercises();
         }
         /// <summary>
         /// Удаляет упражнение у пользователя (List).
@@ -134,7 +136,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
                 this.exercises.Remove(exercise);
             }
 
-            SerializableSaver.Save("Exercises.dat", exercises);
+            SaveExercises();
         }
         #endregion
     }

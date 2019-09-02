@@ -1,47 +1,48 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace VirtualFitnessTrainer.MVC.Controllers
 {
     /// <summary>
-    /// Сериализуемый контроллер.
+    /// Serializable менеджер данных.
     /// </summary>
-    public static class SerializableSaver
+    public class SerializableDataManager : IDataManager
     {
         #region Methods
         /// <summary>
         /// Выгружает (десериализует) данные.
         /// </summary>
         /// <typeparam name="T">Тип элментов.</typeparam>
-        /// <param name="filePath">Путь файла.</param>
-        /// <returns>Если true то, возвращает все элменты типа, иначе пустой список.</returns>
-        public static List<T> Load<T>(string filePath)
+        /// <returns></returns>
+        public IEnumerable<T> Load<T>() where T : class
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
 
+            string filePath = typeof(T).Name + ".dat";
+
             using (FileStream fileStream = new FileStream(filePath, FileMode.OpenOrCreate))
             {
-                if (fileStream.Length > 0 && binaryFormatter.Deserialize(fileStream) is List<T> items)
-                {
-                    return items;
-                }
-                else
+                if (fileStream.Length < 1)
                 {
                     return new List<T>();
                 }
+
+                IEnumerable<T> items = binaryFormatter.Deserialize(fileStream) as IEnumerable<T>;
+
+                return items;
             }
         }
         /// <summary>
         /// Сохраняет (сериализует) данные.
         /// </summary>
         /// <typeparam name="T">Тип элементов.</typeparam>
-        /// <param name="filePath">Путь файла.</param>
         /// <param name="items">Элементы.</param>
-        public static void Save<T>(string filePath, List<T> items)
+        public void Save<T>(IEnumerable<T> items) where T : class
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+            string filePath = typeof(T).Name + ".dat";
 
             using (FileStream fileStream = new FileStream(filePath, FileMode.OpenOrCreate))
             {
