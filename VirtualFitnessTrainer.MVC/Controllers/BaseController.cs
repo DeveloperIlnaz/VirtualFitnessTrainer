@@ -5,7 +5,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
     public class BaseController
     {
         #region Properties
-        protected IDataManager dataManager = new EntityDataManager();
+        protected IDataManager dataManager = new SerializableDataManager();
         #endregion
 
         #region Methods

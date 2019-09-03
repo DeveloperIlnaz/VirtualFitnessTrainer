@@ -99,8 +99,6 @@ namespace VirtualFitnessTrainer.MVC.Controllers
 
             exercises.Add(exercise);
 
-            SaveExercises();
-
             return exercise;
         }
         /// <summary>
