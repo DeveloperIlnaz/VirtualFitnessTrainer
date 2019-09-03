@@ -15,7 +15,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         /// </summary>
         /// <typeparam name="T">Тип элментов.</typeparam>
         /// <returns></returns>
-        public IEnumerable<T> Load<T>() where T : class
+        public List<T> Load<T>() where T : class
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
 
@@ -28,7 +28,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
                     return new List<T>();
                 }
 
-                IEnumerable<T> items = binaryFormatter.Deserialize(fileStream) as IEnumerable<T>;
+                List<T> items = binaryFormatter.Deserialize(fileStream) as List<T>;
 
                 return items;
             }
@@ -38,7 +38,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         /// </summary>
         /// <typeparam name="T">Тип элементов.</typeparam>
         /// <param name="items">Элементы.</param>
-        public void Save<T>(IEnumerable<T> items) where T : class
+        public void Save<T>(List<T> items) where T : class
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
 

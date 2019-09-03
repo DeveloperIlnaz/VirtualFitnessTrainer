@@ -11,11 +11,11 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         /// </summary>
         /// <typeparam name="T">Тип элементов.</typeparam>
         /// <returns></returns>
-        public IEnumerable<T> Load<T>() where T : class
+        public List<T> Load<T>() where T : class
          {
             using (VFTDbContext vftDbContext = new VFTDbContext())
             {
-                IEnumerable<T> items = vftDbContext.Set<T>().Where(t => true);
+                List<T> items = vftDbContext.Set<T>().Where(t => true).ToList();
 
                 return items;
             }
@@ -25,7 +25,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         /// </summary>
         /// <typeparam name="T">Тип элементов.</typeparam>
         /// <param name="items">Элементы.</param>
-        public void Save<T>(IEnumerable<T> items) where T : class
+        public void Save<T>(List<T> items) where T : class
         {
             using (VFTDbContext vftDbContext = new VFTDbContext())
             {

@@ -20,7 +20,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         #region Constructors
         public UserController()
         {
-            users = Load<User>().ToList();
+            users = Load<User>();
         }
         #endregion
 

@@ -35,7 +35,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
         /// </summary>
         public ExerciseController()
         {
-            exercises = Load<Exercise>().ToList();
+            exercises = Load<Exercise>();
         }
         #endregion
 

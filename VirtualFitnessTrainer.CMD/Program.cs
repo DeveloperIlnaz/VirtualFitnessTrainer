@@ -20,7 +20,7 @@ namespace VirtualFitnessTrainer.CMD
         private static string GetLanguageItemValue(string name)
         {
             return resourceManager.GetString(name, cultureInfo);
-    }
+        }
         private static void ChooseLanguage()
         {
             string language = "";
@@ -53,7 +53,7 @@ namespace VirtualFitnessTrainer.CMD
                 break;
             }
         }
-        private static void StartMenu(out User user)
+        private static void StartMenu(out User user, int endTime = 500)
         {
             while (true)
             {
@@ -78,7 +78,7 @@ namespace VirtualFitnessTrainer.CMD
                         continue;
                 }
 
-                Thread.Sleep(500);
+                Thread.Sleep(endTime);
                 Console.Clear();
 
                 break;

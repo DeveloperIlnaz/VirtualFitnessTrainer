@@ -17,9 +17,17 @@ namespace VirtualFitnessTrainer.MVC.Models
 
         #region Properties
         /// <summary>
+        /// Идентификатор.
+        /// </summary>
+        public int Id { get; private set; }
+        /// <summary>
+        /// Идентификатор пользователя.
+        /// </summary>
+        public int UserId { get; private set; }
+        /// <summary>
         /// Пользователь.
         /// </summary>
-        public User User { get; }
+        public User User { get; private set; }
         /// <summary>
         /// Название.
         /// </summary>
@@ -42,12 +50,19 @@ namespace VirtualFitnessTrainer.MVC.Models
         /// <summary>
         /// Дата и время добавления.
         /// </summary>
-        public DateTime Added { get; }
+        public DateTime Added { get; private set; }
         #endregion
         
         #region Constructors
         /// <summary>
-        /// Создает упражнение.
+        /// Создает объект упражнение.
+        /// </summary>
+        private Exercise()
+        {
+
+        }
+        /// <summary>
+        /// Создает объект упражнение.
         /// </summary>
         /// <param name="user">Пользователь.</param>
         /// <param name="name">Название.</param>

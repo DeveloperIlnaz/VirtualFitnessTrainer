@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace VirtualFitnessTrainer.MVC.Models
 {
@@ -79,6 +80,10 @@ namespace VirtualFitnessTrainer.MVC.Models
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Идентификатор.
+        /// </summary>
+        public int Id { get; private set; }
         /// <summary>
         /// Логин.
         /// </summary>
@@ -187,6 +192,13 @@ namespace VirtualFitnessTrainer.MVC.Models
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Создает объект пользователя.
+        /// </summary>
+        private User()
+        {
+
+        }
         /// <summary>
         /// Создает объект пользователя.
         /// </summary>

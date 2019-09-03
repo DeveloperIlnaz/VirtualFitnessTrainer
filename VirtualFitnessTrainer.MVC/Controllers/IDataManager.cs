@@ -4,7 +4,7 @@ namespace VirtualFitnessTrainer.MVC.Controllers
 {
     public interface IDataManager
     {
-        IEnumerable<T> Load<T>() where T : class;
-        void Save<T>(IEnumerable<T> items) where T : class;
+        List<T> Load<T>() where T : class;
+        void Save<T>(List<T> items) where T : class;
     }
 }

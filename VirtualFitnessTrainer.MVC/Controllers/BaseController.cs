@@ -1,20 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace VirtualFitnessTrainer.MVC.Controllers
 {
     public class BaseController
     {
-        protected IDataManager dataManager = new SerializableDataManager();
+        #region Properties
+        protected IDataManager dataManager = new EntityDataManager();
+        #endregion
 
-        protected void Save<T>(IEnumerable<T> items) where T : class
+        #region Methods
+        protected void Save<T>(List<T> items) where T : class
         {
             dataManager.Save<T>(items);
         }
-
-        protected IEnumerable<T> Load<T>() where T : class
+        protected List<T> Load<T>() where T : class
         {
             return dataManager.Load<T>();
         }
+        #endregion
     }
 }
